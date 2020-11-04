@@ -28,6 +28,7 @@ def lemmatize(sentence):
         w = w.lower()
         # Remove punctuations
         w = re.sub(r'[\'\"]', ' ', w)
+        w = re.sub(r'[~`!@#$\%^&*\(\)-_+=\{\}\[\];:<>,.?/\\\|]+', '', w)
         # Lowercase the numbers
         w = re.sub(r'[0-9]', '', w)
         # Remove the doubled space

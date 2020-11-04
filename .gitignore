@@ -3,3 +3,4 @@ env
 __pycache__
 documents
 node_modules
+*.csv
