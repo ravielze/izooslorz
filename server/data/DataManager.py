@@ -7,13 +7,13 @@ class DataManager():
         self.__data = data_file_name + ".csv"
         self.__file_exist = Path(self.__data).is_file()
 
-    def init(self, overwrite=False):
+    def init(self, overwrite : bool = False):
         if (overwrite or not(self.__file_exist)):
             with open(self.__data, mode='w', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=['filename', 'data'])
                 writer.writeheader()
 
-    def write(self, d):
+    def write(self, d: dict):
         """
             d adalah dictionary dengan format sebagai berikut
             {'filename': namafile, 'data': datanf}
@@ -24,7 +24,7 @@ class DataManager():
             writer = csv.DictWriter(f, fieldnames=['filename', 'data'])
             writer.writerow(d)
 
-    def read(self, filename):
+    def read(self, filename: str):
         """
             Mencari data dengan filename tertentu.
         """
