@@ -13,6 +13,7 @@ olefile==0.46
 pdfminer.six==20181108
 Pillow==8.0.1
 pycryptodome==3.9.9
+PyPDF2==1.26.0
 python-pptx==0.6.18
 pytz==2020.4
 regex==2020.10.28
