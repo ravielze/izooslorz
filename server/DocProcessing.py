@@ -5,6 +5,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords 
 from enum import Enum
 import re
+import textract
+import PyPDF2
 
 """
     NLTK NEEDS THESE LIBRARY
@@ -17,20 +19,22 @@ class Language(Enum):
     BAHASA = 1
 
 def lemmatize(sentence):
-    words = sentence.split()
+    # Remove newline symbol
+    words = sentence.replace('\\n','').split()
     cleaned = []
     for d in words:
         # Remove Unicode
         w = re.sub(r'[^\x00-\x7F]+', ' ', d)
         # Remove Mentions
-        w = re.sub(r'@\w+', '', w)
+        w = re.sub(r'@\w+', ' ', w)
         # Lowercase the document
         w = w.lower()
         # Remove punctuations
         w = re.sub(r'[\'\"]', ' ', w)
-        w = re.sub(r'[~`!@#$\%^&*\(\)-_+=\{\}\[\];:<>,.?/\\\|]+', '', w)
+        # Remove symbol
+        w = re.sub(r'[~`!@#$\%^&*\(\)-_+=\{\}\[\];:<>,.?/\\\|]+', ' ', w)
         # Lowercase the numbers
-        w = re.sub(r'[0-9]', '', w)
+        w = re.sub(r'[0-9]', ' ', w)
         # Remove the doubled space
         w = re.sub(r'\s{2,}', ' ', w)
         cleaned.append(w)
@@ -82,3 +86,46 @@ def naturalize(language, sentence):
     stemmed = stem(language, lemmatized)
     sw = stopword(language, stemmed)
     return sw
+
+
+def word_count(sentence):
+    words = sentence.split()
+    result = {}
+    for w in words:
+        if w in result.keys():
+            result[w] += 1
+        else:
+            result[w] = 1
+    return result
+
+class DocumentManager():
+
+    def __init__(self):
+        self.__document_path = './documents/'
+        self.__document_bahasa = self.__document_path + "bahasa/"
+        self.__document_english = self.__document_path + "english/"
+
+    def process(self, language, filename: str):
+        path = ""
+        if (language == Language.ENGLISH):
+            path = self.__document_english
+        elif (language == Language.BAHASA):
+            path = self.__document_bahasa
+        
+        if (len(path) != 0):
+            ext = filename.split(".")[-1]
+            output = ""
+            if ext == 'pdf':
+                with open(path + filename, mode='rb') as f:
+                    reader = PyPDF2.PdfFileReader(f)
+                    for page in reader.pages:
+                        if len(output) != 0:
+                            output += " "
+                        output += page.extractText().encode('unicode_escape').decode('utf-8')
+            elif ext == 'docx' or ext == 'pptx':
+                output = textract.process('./documents/english/001_Employee Recognition at Intuit.docx', encoding='ascii').decode('utf-8')
+            return output
+
+dm = DocumentManager()
+t = dm.process(Language.BAHASA, "PR08_13519044_KinantanAryaBagaspati.pdf")
+print(naturalize(Language.BAHASA, t))
