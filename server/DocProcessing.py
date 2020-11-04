@@ -7,6 +7,7 @@ from enum import Enum
 import re
 import textract
 import PyPDF2
+from data.DataManager import DataManager
 
 """
     NLTK NEEDS THESE LIBRARY
@@ -104,8 +105,10 @@ class DocumentManager():
         self.__document_path = './documents/'
         self.__document_bahasa = self.__document_path + "bahasa/"
         self.__document_english = self.__document_path + "english/"
+        self.__data_manager = DataManager('documents')
+        self.__data_manager.init()
 
-    def process(self, language, filename: str):
+    def extract(self, language, filename: str) -> str:
         path = ""
         if (language == Language.ENGLISH):
             path = self.__document_english
@@ -123,9 +126,14 @@ class DocumentManager():
                             output += " "
                         output += page.extractText().encode('unicode_escape').decode('utf-8')
             elif ext == 'docx' or ext == 'pptx':
-                output = textract.process('./documents/english/001_Employee Recognition at Intuit.docx', encoding='ascii').decode('utf-8')
+                output = textract.process(path + filename, encoding='ascii').decode('utf-8')
             return output
 
-dm = DocumentManager()
-t = dm.process(Language.BAHASA, "PR08_13519044_KinantanAryaBagaspati.pdf")
-print(naturalize(Language.BAHASA, t))
+    def process(self, language, filename: str) -> dict:
+        result = self.__data_manager.read(filename)
+        if (result == None):
+            extracted_text = self.extract(language, filename)
+            d = word_count(naturalize(language, extracted_text))
+            self.__data_manager.write({'filename': filename, 'data': d})
+            result = d
+        return result
