@@ -99,6 +99,32 @@ def word_count(sentence):
             result[w] = 1
     return result
 
+def merge_sort(D: list, a:int, b:int):
+    if(b-a != 1):
+        mid = (a+b)//2
+        merge_sort(D, a, mid)
+        merge_sort(D, mid, b)
+        temp = []
+        P1 = a
+        P2 = mid
+        while(P1<mid and P2<b):
+            if(D[P1] <= D[P2]):
+                temp.append(D[P1])
+                P1 = P1+1
+            else:
+                temp.append(D[P2])
+                P2 = P2+1
+        while(P1<mid):
+            temp.append(D[P1])
+            P1 = P1+1
+        while(P2<b):
+            temp.append(D[P2])
+            P2 = P2+1
+        for i in range (b-a):
+            D[a+i] = temp[i]
+    
+
+
 class DocumentManager():
 
     def __init__(self):
@@ -134,6 +160,14 @@ class DocumentManager():
         if (result == None):
             extracted_text = self.extract(language, filename)
             d = word_count(naturalize(language, extracted_text))
-            self.__data_manager.write({'filename': filename, 'data': d})
+            temp = []
+            for key in d:
+                temp.append([key, d[key]])
+            merge_sort(temp, 0, len(temp))
+            sorted = {}
+            for i in range (len(temp)):
+                sorted[temp[i][0]] = temp[i][1]
+            self.__data_manager.write({'filename': filename, 'data': sorted})
             result = d
         return result
+
