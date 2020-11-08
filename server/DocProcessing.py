@@ -97,6 +97,12 @@ def word_count(sentence):
             result[w] += 1
         else:
             result[w] = 1
+    norm = 0
+    for k in result.keys():
+        norm += (result[k]*result[k])
+    norm **= 0.5
+    result["_norm"] = norm
+    result["_total"] = len(words)
     return result
 
 def merge_sort(D: list, a:int, b:int):

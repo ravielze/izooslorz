@@ -1,5 +1,10 @@
 from DocProcessing import DocumentManager, Language
 
-dm = DocumentManager()
-a = dm.process(Language.BAHASA, "mapresrika.docx")
-print(a[1])
+def cosineDict(q: dict, d: dict):
+    result = 0
+    for k in q.keys():
+        if (k in d.keys()):
+            result += (q[k]*d[k])
+    denom = q["_norm"]*d["_norm"]
+    result = result/denom - 1
+    return result
