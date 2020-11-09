@@ -105,6 +105,28 @@ def word_count(sentence):
     result["_total"] = len(words)
     return result
 
+def word_count_array(sentence): #If decided to use array
+    words = sentence.split()
+    merge_sort(words, 0, len(words))
+    result = [["_norm", 0], ["_total", len(words)]]
+    word = words[0]
+    count = 1
+    i = 1
+    while(i<len(words)):
+        if(words[i] == words[i-1]):
+            count += 1
+        else:
+            result.append([words[i-1], count])
+            count = 1
+        i+=1
+    result.append([words[i-1], count])
+    norm = 0
+    for k in range(2, len(result)):
+        norm += (result[k][1]*result[k][1])
+    norm **= 0.5
+    result[0][1] = norm
+    return result
+
 def merge_sort(D: list, a:int, b:int):
     if(b-a != 1):
         mid = (a+b)//2
@@ -176,4 +198,3 @@ class DocumentManager():
             self.__data_manager.write({'filename': filename, 'data': sorted})
             result = d
         return result
-
