@@ -19,17 +19,10 @@ class DM():
         return filename.split(".")[-1]
 
     def getPath(self, is_bahasa_indonesia: bool, filename: str) -> str:
-        document_path = './documents/'
-        if (is_bahasa_indonesia):
-            return document_path + "bahasa/" + filename
-        else:
-            return document_path + "english/" + filename
+        return './documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
     
     def find(self, is_bahasa_indonesia: bool, filename: str) -> str:
-        if (is_bahasa_indonesia):
-            lang = 'bahasa'
-        else:
-            lang = 'english'
+        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
         I = self.__dmanager.readIter()
         while (I.hasNext()):
             now = dict(I.next())
@@ -67,10 +60,7 @@ class DM():
         else:
             return content
 
-        if (is_bahasa_indonesia):
-            lang = 'bahasa'
-        else:
-            lang = 'english'
+        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
         content = self.__lpp.naturalize(is_bahasa_indonesia, content)
         self.__dmanager.writenl({'filename': filename, 'language': lang, 'content': content})
         return content
