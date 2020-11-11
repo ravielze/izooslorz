@@ -4,3 +4,4 @@ __pycache__
 documents
 node_modules
 *.csv
+test*.*
