@@ -27,9 +27,19 @@ class DM():
         while (I.hasNext()):
             now = dict(I.next())
             if (now['filename'] == filename and now["language"] == lang):
-                print("skip")
                 return now['content']
         return None
+
+    def getDocuments(self, is_bahasa_indonesia: bool) -> list:
+        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
+        I = self.__dmanager.readIter()
+        result = []
+        while (I.hasNext()):
+            now = dict(I.next())
+            if (now["language"] != lang):
+                continue
+            result.append(now["filename"])
+        return result
     
     def arraytostring(self, arr: list) -> str:
         """To convert an array to a string"""
