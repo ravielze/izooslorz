@@ -7,7 +7,7 @@ from enum import Enum
 import re
 import textract
 import PyPDF2
-from data.DataManager import DataManager
+from data.DataManager import WordStorageManager
 
 """
     NLTK NEEDS THESE LIBRARY
@@ -101,7 +101,7 @@ def word_count(sentence):
     for k in result.keys():
         norm += (result[k]*result[k])
     norm **= 0.5
-    result["_norm"] = norm
+    #result["_norm"] = norm
     result["_total"] = len(words)
     return result
 
@@ -159,7 +159,7 @@ class DocumentManager():
         self.__document_path = './documents/'
         self.__document_bahasa = self.__document_path + "bahasa/"
         self.__document_english = self.__document_path + "english/"
-        self.__data_manager = DataManager('documents')
+        self.__data_manager = WordStorageManager('documents')
         self.__data_manager.init()
 
     def extract(self, language, filename: str) -> str:
