@@ -1,21 +1,77 @@
+from Data import Data
+from DM import DM
+import math
+
 class Vezz():
     """Vezz stands for Vectorizer"""
 
     def __init__(self):
-        pass
+        self.__idf = Data('idf', ['language', 'term', 'idf'])
 
     def dot(self, d: dict, d2: dict) -> float:
-        """Return Similarities"""
-        pass
+        idf = {}
+        I = self.__idf.readIter()
+        while (I.hasNext()):
+            now = dict(I.next())
+            idf[now["term"]] = float(now["idf"])
+        
+        norm = 0
+        for i in d.keys():
+            norm += ((d[i]*idf[i])**2)
+        norm **= 0.5
+        norm2 = 0
+        for i in d2.keys():
+            norm2 += ((d2[i]*idf[i])**2)
+        norm2 **= 0.5
+
+        result = 0
+        for i in d.keys():
+            if i in d2.keys():
+                result += ((d[i]*idf[i])*(d2[i]*idf[i]))
+        return result/(norm*norm2)
 
 class Selch():
     """ Selch stands for Search """
     
-    def __init__(self):
-        pass
+    def __init__(self, docmanager: DM):
+        self.__tf = Data('tf', ['filename', 'language', 'term', 'tf'])
+        self.__idf = Data('idf', ['language', 'term', 'idf'])
+        self.__docmanager = docmanager
 
-    def search(self, query: str) -> list:
-        pass
+    def search(self, query: str, is_bahasa_indonesia: bool) -> list:
+        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        sorter = []
+        q = query.split()
+        query_set = set(q)
+        d = {}
+        for w in query_set:
+            d[w] = q.count(w)
+        for f in files:
+            I = self.__tf.readIter_filter(f, is_bahasa_indonesia)
+            cur_dict = {}
+            while (I.hasNext()):
+                now = dict(I.next())
+                cur_dict[now["term"]] = float(now["tf"])
+            sorter.append([Vezz().dot(d, cur_dict), f])
+        sorter.sort(reverse=True)
+        result = []
+        for i in range (len(sorter)):
+            cur_dict = {"Nama File": sorter[i][1], "Tingkat Kecocokan": sorter[i][0]}
+            result.append(cur_dict)
+        return result
 
     def documentComparing(self, is_bahasa_indonesia: bool, filename: str, filename2: str) -> dict:
-        pass
+        result = {"Judul Dokumen 1": filename, "Judul Dokumen 2": filename2}
+        I = self.__tf.readIter_filter(filename, is_bahasa_indonesia)
+        d = {}
+        while (I.hasNext()):
+            now = dict(I.next())
+            d[now["term"]] = float(now["tf"])
+        I = self.__tf.readIter_filter(filename2, is_bahasa_indonesia)
+        d2 = {}
+        while (I.hasNext()):
+            now = dict(I.next())
+            d2[now["term"]] = float(now["tf"])
+        result["Tingkat Kemiripan"] = Vezz().dot(d, d2)
+        return result
+        
