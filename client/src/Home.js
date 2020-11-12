@@ -16,6 +16,9 @@ const Home = () => {
         </img>
       <SearchBar>
       </SearchBar>
+      <p>
+        <a href="">Bahasa Indonesia</a> | <a href="">Bahasa Inggris</a>
+      </p>
       <a href = "/upload">
         <button>Upload File</button>
       </a>
