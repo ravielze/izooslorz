@@ -1,5 +1,6 @@
 from Data import Data
 from DM import DM
+from LPP import LPP
 import math
 
 class Vezz():
@@ -11,6 +12,7 @@ class Vezz():
     def dot(self, d: dict, d2: dict) -> float:
         idf = {}
         I = self.__idf.readIter()
+        I.next()
         while (I.hasNext()):
             now = dict(I.next())
             idf[now["term"]] = float(now["idf"])
@@ -33,14 +35,16 @@ class Vezz():
 class Selch():
     """ Selch stands for Search """
     
-    def __init__(self, docmanager: DM):
+    def __init__(self, docmanager: DM, lpp: LPP):
         self.__tf = Data('tf', ['filename', 'language', 'term', 'tf'])
         self.__idf = Data('idf', ['language', 'term', 'idf'])
         self.__docmanager = docmanager
+        self.__lpp = lpp
 
     def search(self, query: str, is_bahasa_indonesia: bool) -> list:
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
         sorter = []
+        query = self.__lpp.naturalize(is_bahasa_indonesia, query)
         q = query.split()
         query_set = set(q)
         d = {}
