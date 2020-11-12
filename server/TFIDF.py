@@ -1,5 +1,6 @@
 from Data import Data
 from DM import DM
+from BDIter import biiter
 
 """TF-IDF stands for Term Frequency and Inverse Document Frequency"""
 
@@ -8,6 +9,7 @@ class TF():
     def __init__(self, docmanager: DM):
         self.__dmanager = Data('tf', ['filename', 'language', 'term', 'tf'])
         self.__docmanager = docmanager
+        self.__cache = (str('filename.empty'), biiter([]))
 
     def refresh(self, is_bahasa_indonesia):
         lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
@@ -29,11 +31,15 @@ class TF():
                 self.__dmanager.writenl({'filename': f, 'language': lang, 'term': w, 'tf': tf})
 
     def find(self, filename, is_bahasa_indonesia, term) -> float:
-        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
-        I = self.__dmanager.readIter()
+        if (self.__cache[0] == filename):
+            I = (self.__cache[1]).copy()
+        else:
+            I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
+            self.__cache = (str(filename), I.copy())
+
         while (I.hasNext()):
             now = dict(I.next())
-            if (now['filename'] == filename and now["language"] == lang and now["term"] == term):
+            if (now["term"] == term):
                 return float(now['tf'])
         return float(-1)
     

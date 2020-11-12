@@ -22,23 +22,18 @@ class DM():
         return './documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
     
     def find(self, is_bahasa_indonesia: bool, filename: str) -> str:
-        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
-        I = self.__dmanager.readIter()
-        while (I.hasNext()):
+        I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
+        if (I.hasNext()):
             now = dict(I.next())
-            if (now['filename'] == filename and now["language"] == lang):
-                return now['content']
+            return now['content']
         return None
 
     def getDocuments(self, is_bahasa_indonesia: bool) -> list:
-        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
-        I = self.__dmanager.readIter()
         result = []
+        I = biiter(self.__dmanager.readIter_filter(None, is_bahasa_indonesia).getList())
         while (I.hasNext()):
             now = dict(I.next())
-            if (now["language"] != lang):
-                continue
-            result.append(now["filename"])
+            result.append(now['filename'])
         return result
     
     def arraytostring(self, arr: list) -> str:
