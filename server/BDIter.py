@@ -28,5 +28,11 @@ class biiter(object):
             raise StopIteration
         return self.__T[self.__idx]
 
+    def getList(self):
+        return self.__T
+
+    def copy(self):
+        return biiter(self.__T)
+
     def __iter__(self):
         return self
