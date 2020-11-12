@@ -60,6 +60,59 @@ class Data:
 
     def readIter(self) -> biiter:
         """Read all data as biiter."""
-        with open("Data/" + self.__file + '.csv', mode='r', newline='') as f:
-            reader = list(csv.DictReader(f, fieldnames=self.__field))
-            return biiter(reader)
+        try:
+            with open("Data/" + self.__file + '.csv', mode='r', newline='') as f:
+                reader = list(csv.DictReader(f, fieldnames=self.__field))
+                return biiter(reader)
+        except:
+            return biiter([])
+    
+    def readIter_filter(self, filename=None, is_bahasa_indonesia=None) -> biiter:
+        """Read all data as biiter with filename filter."""
+        if filename != None and is_bahasa_indonesia != None:
+            if "language" in self.__field and "filename" in self.__field:
+                result = []
+                lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
+
+                I = self.readIter()
+
+                while (I.hasNext()):
+                    now = dict(I.next())
+
+                    if (now['filename'] == filename and now["language"] == lang):
+                        result.append(now)
+                
+                return biiter(result)
+            else:
+                return biiter([])
+        elif filename != None:
+            if "filename" in self.__field:
+                result = []
+
+                I = self.readIter()
+
+                while (I.hasNext()):
+                    now = dict(I.next())
+
+                    if (now['filename'] == filename):
+                        result.append(now)
+                
+                return biiter(result)
+            else:
+                return biiter([])
+        else:
+            if "language" in self.__field:
+                result = []
+
+                I = self.readIter()
+                lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
+
+                while (I.hasNext()):
+                    now = dict(I.next())
+
+                    if (now["language"] == lang):
+                        result.append(now)
+                
+                return biiter(result)
+            else:
+                return biiter([])
