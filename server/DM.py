@@ -11,9 +11,9 @@ TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html']
 class DM():
     """DM stands for Document Manager."""
 
-    def __init__(self):
+    def __init__(self, lpp: LPP):
         self.__dmanager = Data('document', ['filename', 'language', 'content'])
-        self.__lpp = LPP()
+        self.__lpp = lpp
 
     def getFileExtension(self, filename: str) -> str:
         return filename.split(".")[-1]
@@ -29,12 +29,18 @@ class DM():
         return None
 
     def getDocuments(self, is_bahasa_indonesia: bool) -> list:
+        """ Get List of Document's Name """
         result = []
         I = biiter(self.__dmanager.readIter_filter(None, is_bahasa_indonesia).getList())
         while (I.hasNext()):
             now = dict(I.next())
             result.append(now['filename'])
         return result
+
+    def getDocumentTerms(self, is_bahasa_indonesia: bool, filename: str) -> set:
+        """ Return Unique Terms. """
+        content = self.find(is_bahasa_indonesia, filename)
+        return (set(content.split()))
     
     def arraytostring(self, arr: list) -> str:
         """To convert an array to a string"""
