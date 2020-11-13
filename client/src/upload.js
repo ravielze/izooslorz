@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React,{Component} from 'react'; 
   
-import Image from "./logo.jpg";
+import Image from "./img/logo.jpg";
 
 class upload extends Component { 
    
@@ -81,7 +81,7 @@ class upload extends Component {
      
       return ( 
         <div> 
-            <img src={Image} class="Upload-logo" alt="">
+            <img src={Image} class="App-logo" alt="">
             </img>
             <div>
                 <h3> 
