@@ -4,8 +4,12 @@ import DocuQuery from "../components/Documents";
 
 const QueryPage = () => {
     return (
-      <div>
-        <DocuQuery/>
+      <div className = "Container">
+        <div className="QueryPage-Head">
+        </div>
+        <div className="QueryPage-Body">
+          <DocuQuery/>
+        </div>
       </div>
     );
   };
