@@ -60,8 +60,10 @@ class Selch():
         sorter.sort(reverse=True)
         result = []
         for i in range (len(sorter)):
-            cur_dict = {"Nama File": sorter[i][1], "Tingkat Kecocokan": sorter[i][0]}
+            d = self.__docmanager.getDocument(is_bahasa_indonesia, sorter[i][1])
+            cur_dict = {"Nama File": sorter[i][1], "Jumlah Kata": d["length"],"Tingkat Kecocokan": sorter[i][0], "Kalimat Pertama": d["first_sentence"]}
             result.append(cur_dict)
+            
         return result
 
     def documentComparing(self, is_bahasa_indonesia: bool, filename: str, filename2: str) -> dict:
