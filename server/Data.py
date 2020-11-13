@@ -36,6 +36,12 @@ class Data:
             writer.writeheader()
             for x in dicts:
                 writer.writerow(x)
+
+    def reset(self):
+        """Reset."""
+        with open("Data/" + self.__file + '.csv', mode='w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=self.__field,  dialect='excel')
+            writer.writeheader()
     
     def writenl(self, x: dict):
         """Write new line."""
