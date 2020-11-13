@@ -14,16 +14,16 @@ const Home = () => {
       </p>
       <header className="App-header">
         <img src={Image} class="App-logo" alt=""></img>
-        <p>
+        <p className="SearchComponents">
           <SearchBar />
           <ControlledOpenSelect />
         </p>
-        <a href="/upload">
-          <Button variant="outlined" color="primary">
-            Upload
-          </Button>
-        </a>
         <p className="AboutUs">
+          <a href="/upload">
+            <Button variant="outlined" color="primary">
+              Upload
+            </Button>
+          </a>
           <a href="/AboutUs">
             <Button variant="outlined" color="primary">
               About Us

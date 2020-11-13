@@ -85,9 +85,17 @@
   text-transform: capitalize;
   text-align: center;
 }
-
+.SearchComponents{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .AboutUs{
   position : absolute;
+  display: flex;
+  justify-content: space-evenly;
+  width: 300px;
   bottom : 20px;
   right : 30px;
 }
