@@ -7,6 +7,7 @@ import math
 """TF-IDF stands for Term Frequency and Inverse Document Frequency.
     Source: https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/"""
 
+"""Known bug: IDF ga ngehapus yang sebelumnya, TF ngespam."""
 class TF():
 
     def __init__(self, docmanager: DM, lpp: LPP):
@@ -30,24 +31,31 @@ class TF():
             result[w]   = tf
         return result
 
-    def refresh(self, is_bahasa_indonesia: bool):
-        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
+    def process(self, is_bahasa_indonesia: bool, filename: str):
+        content         = self.__docmanager.find(is_bahasa_indonesia, filename)
+        if (len(content) == 0):
+            return
+        lang            = 'bahasa' if (is_bahasa_indonesia) else 'english'
+
+        words           = content.split()
+        doc_length      = len(words)
+        unique_words    = set(words)
+
+        for w in unique_words:
+            tf          = float(words.count(w))/float(doc_length)
+            
+            self.__dmanager.writenl({'filename': filename, 'language': lang, 'term': w, 'tf': tf})
+
+
+    def refresh(self, is_bahasa_indonesia: bool=None):
+        if (is_bahasa_indonesia == None):
+            self.refresh(True)
+            self.refresh(False)
+            return
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
 
         for f in files:
-            content         = self.__docmanager.find(is_bahasa_indonesia, f)
-
-            if (len(content) == 0):
-                continue
-
-            words           = content.split()
-            doc_length      = len(words)
-            unique_words    = set(words)
-
-            for w in unique_words:
-                tf          = float(words.count(w))/float(doc_length)
-                
-                self.__dmanager.writenl({'filename': f, 'language': lang, 'term': w, 'tf': tf})
+            self.process(is_bahasa_indonesia, f)
 
     def find(self, filename: str, is_bahasa_indonesia: bool, term: str) -> float:
         if (self.__cache[0] == filename):
@@ -72,6 +80,11 @@ class IDF():
         self.__lpp = lpp
     
     def refresh(self, is_bahasa_indonesia: bool):
+        if (is_bahasa_indonesia == None):
+            self.refresh(True)
+            self.refresh(False)
+            return
+        #LUPA hapus yang sebelumnya
         lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
         all_documents = float(len(files))
