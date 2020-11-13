@@ -78,4 +78,42 @@ class Selch():
             d2[now["term"]] = float(now["tf"])
         result["Tingkat Kemiripan"] = Vezz().dot(d, d2)
         return result
+    
+    def termTable(self, query: str, is_bahasa_indonesia: bool) -> list:
+        terms = set([])
+        I = self.__idf.readIter()
+        I.next()
+        while (I.hasNext()):
+            now = dict(I.next())
+            terms.add(now["term"])
+        
+        query = self.__lpp.naturalize(is_bahasa_indonesia, query)
+        q = query.split()
+        query_set = set(q)
+        d = {}
+        for w in query_set:
+            d[w] = q.count(w)
+            terms.add(w)
+        
+        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        result = [["Terms", "Query"]]
+        ad = []
+        for term in terms:
+            if term in d.keys():
+                ad.append([term, d[term]])
+            else:
+                ad.append([term, 0])
+        ad.sort()
+        result = result + ad
+        for f in files:
+            result[0].append(f)
+            content         = self.__docmanager.find(is_bahasa_indonesia, f)
+            words           = content.split()
+            for i in range(1, len(result)):
+                result[i].append(words.count(result[i][0]))
+        
+        return result
+            
+        
+        
         
