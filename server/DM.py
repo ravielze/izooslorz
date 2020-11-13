@@ -5,6 +5,7 @@ from Data import Data
 from BDIter import biiter
 from pathlib import Path
 from LPP import LPP
+import re
 
 TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html']
 
@@ -12,7 +13,7 @@ class DM():
     """DM stands for Document Manager."""
 
     def __init__(self, lpp: LPP):
-        self.__dmanager = Data('document', ['filename', 'language', 'content'])
+        self.__dmanager = Data('document', ['filename', 'language', 'length', 'first_sentence', 'content'])
         self.__lpp = lpp
 
     def getFileExtension(self, filename: str) -> str:
@@ -46,8 +47,25 @@ class DM():
         """To convert an array to a string"""
         separator = ' '
         return separator.join(arr)
+
+    def getFirstSentence(self, content: str) -> str:
+        if "." in set(content):
+            find = re.compile(r"^[^.]*")
+            return re.search(find, content).group(0)
+        else:
+            if len(content) >= 80:
+                return content[:80] + "..."
+            else:
+                return content[:80]
+
+    def getDocument(self, is_bahasa_indonesia: bool, filename: str) -> dict:
+        I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
+        if (I.hasNext()):
+            now = dict(I.next())
+            return now
+        return {}
     
-    def read(self, is_bahasa_indonesia: bool, filename: str):
+    def read(self, is_bahasa_indonesia: bool, filename: str) -> str:
         fileExist = Path(self.getPath(is_bahasa_indonesia, filename)).is_file()
         if not fileExist:
             return ""
@@ -72,6 +90,8 @@ class DM():
             return content
 
         lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
+        length = len(set(content.split()))
+        first_sentence = self.getFirstSentence(content)
         content = self.__lpp.naturalize(is_bahasa_indonesia, content)
-        self.__dmanager.writenl({'filename': filename, 'language': lang, 'content': content})
+        self.__dmanager.writenl({'filename': filename, 'language': lang, 'content': content, 'first_sentence': first_sentence, 'length': length})
         return content
