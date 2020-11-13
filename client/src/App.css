@@ -92,16 +92,6 @@
   right : 30px;
 }
 
-.AboutUsLogo{
-  position : absolute;
-  left : 30px;
-  height : 100px;
-  width :325px;
-}
-
 .AboutUsText{
-  position : absolute;
-  left : 30px;
-  top : 100px;
   text-align : left;
 }
