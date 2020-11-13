@@ -29,7 +29,7 @@ class Data:
             os.rename(d, dnew)
         self.__file = file
 
-    def write(self, dicts: dict):
+    def write(self, dicts: list):
         """Overwrite all line."""
         with open("Data/" + self.__file + '.csv', mode='w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=self.__field,  dialect='excel')
