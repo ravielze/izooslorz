@@ -85,13 +85,43 @@
   text-transform: capitalize;
   text-align: center;
 }
-
+.SearchComponents{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .AboutUs{
   position : absolute;
+  display: flex;
+  justify-content: space-evenly;
+  width: 300px;
   bottom : 20px;
   right : 30px;
 }
 
 .AboutUsText{
   text-align : left;
+}
+.Document-container{
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.QueryPage-Head{
+  height: 100px;
+  width: 100%;
+  border-bottom: black solid;
+  border-bottom-width: 1px;
+}
+.QueryPage-Body{
+  width: 80%;
+}
+.Container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

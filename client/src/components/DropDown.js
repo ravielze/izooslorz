@@ -36,7 +36,7 @@ export default function ControlledOpenSelect() {
 
   return (
     <div>
-      <FormControl className={classes.formControl}>
+      <FormControl className={classes.formControl} style={{marginLeft: 20}}>
         <InputLabel id="demo-controlled-open-select-label">Language</InputLabel>
         <Select
           labelId="demo-controlled-open-select-label"
@@ -46,6 +46,7 @@ export default function ControlledOpenSelect() {
           onOpen={handleOpen}
           value={age}
           onChange={handleChange}
+          style={{height: 50, marginBottom: 20}}
         >
           <MenuItem value="">
             <em>None</em>
