@@ -61,13 +61,13 @@ class Selch():
         result = []
         for i in range (len(sorter)):
             d = self.__docmanager.getDocument(is_bahasa_indonesia, sorter[i][1])
-            cur_dict = {"Nama File": sorter[i][1], "Jumlah Kata": d["length"],"Tingkat Kecocokan": sorter[i][0], "Kalimat Pertama": d["first_sentence"]}
+            cur_dict = {"namafile": sorter[i][1], "jumlahkata": d["length"],"kecocokan": sorter[i][0], "firstsentence": d["first_sentence"]}
             result.append(cur_dict)
             
         return result
 
     def documentComparing(self, is_bahasa_indonesia: bool, filename: str, filename2: str) -> dict:
-        result = {"Judul Dokumen 1": filename, "Judul Dokumen 2": filename2}
+        result = {"dokumen_1": filename, "dokumen_2": filename2}
         I = self.__tf.readIter_filter(filename, is_bahasa_indonesia)
         d = {}
         while (I.hasNext()):
@@ -78,7 +78,7 @@ class Selch():
         while (I.hasNext()):
             now = dict(I.next())
             d2[now["term"]] = float(now["tf"])
-        result["Tingkat Kemiripan"] = Vezz().dot(d, d2)
+        result["kecocokan"] = Vezz().dot(d, d2)
         return result
     
     def termTable(self, query: str, is_bahasa_indonesia: bool) -> list:
@@ -98,7 +98,7 @@ class Selch():
             terms.add(w)
         
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-        result = [["Terms", "Query"]]
+        result = [["terms", "query"]]
         ad = []
         for term in terms:
             if term in d.keys():
