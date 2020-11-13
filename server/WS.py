@@ -28,7 +28,7 @@ class Scraper():
             now = dict(I.next())
 
     def getPath(self, is_bahasa_indonesia: bool, filename: str) -> str:
-        return './documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
+        return './Documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
 
     def randomNaming(self, N: int) -> str:
         now = str(int(time.time()))
@@ -68,3 +68,11 @@ class Scraper():
             now = dict(I.next())
             result.append(now['filename'])
         return result
+
+    def getUrl(self, is_bahasa_indonesia: bool, filename: str) -> float:
+        I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
+
+        if (I.hasNext()):
+            now = dict(I.next())
+            return now['url']
+        return None
