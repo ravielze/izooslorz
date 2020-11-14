@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 
 import Image from "../img/logo.jpg";
+import NavBar from "../components/NavBar.js";
 
 class upload extends Component {
   state = {
@@ -70,18 +71,25 @@ class upload extends Component {
   render() {
     return (
       <div>
-        <img src={Image} class="App-logo" alt=""></img>
-        <div>
-          <h3>Upload file disini!</h3>
+        <NavBar/>
+        <div className="container">
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <img src={Image} class="App-logo" alt=""></img>
           <div>
-            <input type="file" onChange={this.onFileChange} />
-            <button onClick={this.onFileUpload}>Upload!</button>
+            <h3>Upload file disini!</h3>
+            <div>
+              <input type="file" onChange={this.onFileChange} />
+              <button onClick={this.onFileUpload}>Upload!</button>
+            </div>
           </div>
+          {this.fileData()}
         </div>
-        {this.fileData()}
       </div>
     );
   }
 }
-
 export default upload;
