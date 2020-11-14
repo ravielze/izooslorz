@@ -6,115 +6,106 @@ import math
 
 """TF-IDF stands for Term Frequency and Inverse Document Frequency.
     Source: https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/"""
-
 class TF():
 
-    def __init__(self, docmanager: DM, lpp: LPP):
+    def __init__(self, docmanager: DM):
         self.__dmanager = Data('tf', ['filename', 'language', 'term', 'tf'])
         self.__docmanager = docmanager
-        self.__lpp = lpp
-        self.__cache = (str('filename.empty'), biiter([]))
 
-    def query(self, is_bahasa_indonesia: bool, query: str) -> dict:
-        content = self.__lpp.naturalize(is_bahasa_indonesia, query)
+    def process(self, is_bahasa_indonesia: bool, filename: str):
+        content         = self.__docmanager.find(is_bahasa_indonesia, filename)
         if (len(content) == 0):
-            return {}
-        
-        result          = {}
+            return
+        lang            = 'bahasa' if (is_bahasa_indonesia) else 'english'
+
         words           = content.split()
         doc_length      = len(words)
         unique_words    = set(words)
 
         for w in unique_words:
             tf          = float(words.count(w))/float(doc_length)
-            result[w]   = tf
-        return result
+            
+            self.__dmanager.writenl({'filename': filename, 'language': lang, 'term': w, 'tf': tf})
 
-    def refresh(self, is_bahasa_indonesia: bool):
-        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
-        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-
-        for f in files:
-            content         = self.__docmanager.find(is_bahasa_indonesia, f)
-
-            if (len(content) == 0):
-                continue
-
-            words           = content.split()
-            doc_length      = len(words)
-            unique_words    = set(words)
-
-            for w in unique_words:
-                tf          = float(words.count(w))/float(doc_length)
-                
-                self.__dmanager.writenl({'filename': f, 'language': lang, 'term': w, 'tf': tf})
-
-    def find(self, filename: str, is_bahasa_indonesia: bool, term: str) -> float:
-        if (self.__cache[0] == filename):
-            I = (self.__cache[1]).copy()
-        else:
-            I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
-            self.__cache = (str(filename), I.copy())
-
+        
+    def getDocuments(self, is_bahasa_indonesia: bool) -> list:
+        """ Get List of Document's Name """
+        result = []
+        I = biiter(self.__dmanager.readIter_filter(None, is_bahasa_indonesia).getList())
         while (I.hasNext()):
             now = dict(I.next())
-            if (now["term"] == term):
-                return float(now['tf'])
-        return float(-1)
-    
-    def has(self, filename: str, is_bahasa_indonesia: bool, term: str) -> bool:
-        return (self.find(filename, is_bahasa_indonesia, term) >= 0)
+            result.append(now['filename'])
+        return result
+
+    def refreshAll(self):
+        self.refresh(True)
+        self.refresh(False)
+
+    def refresh(self, is_bahasa_indonesia):
+        files = set(self.__docmanager.getDocuments(is_bahasa_indonesia))
+        rfiles = set(self.getDocuments(is_bahasa_indonesia))
+        process = files.difference(rfiles)
+
+        for f in process:
+            self.process(is_bahasa_indonesia, f)
 
 class IDF():
-    def __init__(self, docmanager: DM, lpp: LPP):
-        self.__dmanager = Data('idf', ['language', 'term', 'idf'])
+    def __init__(self, docmanager: DM):
+        self.__dmanager = Data('idf', ['language', 'term', 'count'])
+        self.__idfdoc = Data('idfdoc', ['filename', 'language'])
         self.__docmanager = docmanager
-        self.__lpp = lpp
-    
-    def refresh(self, is_bahasa_indonesia: bool):
-        lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
-        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-        all_documents = float(len(files))
-        processed_terms = set()
 
-        for f in files:
-            unique_terms = self.__docmanager.getDocumentTerms(is_bahasa_indonesia, f)
-
-            for term in unique_terms:
-
-                if term in processed_terms:
-                    continue
-
-                term_count = float(0)
-                for g in files:
-                    unique_terms_g = self.__docmanager.getDocumentTerms(is_bahasa_indonesia, g)
-                    if term in processed_terms:
-                        continue
-                    if term in unique_terms_g:
-                        term_count += float(1)
-                
-                idf = 1+math.log(all_documents/term_count)
-                self.__dmanager.writenl({'language': lang, 'term': term, 'idf': idf})
-                processed_terms.add(term)
-
-    def find(self, is_bahasa_indonesia: bool, term: str) -> float:
-        I = self.__dmanager.readIter_filter(None, is_bahasa_indonesia)
-
+    def getDocuments(self, is_bahasa_indonesia: bool) -> list:
+        """ Get List of Document's Name """
+        result = []
+        I = biiter(self.__idfdoc.readIter_filter(None, is_bahasa_indonesia).getList())
         while (I.hasNext()):
             now = dict(I.next())
-            if (now["term"] == term):
-                return float(now['idf'])
-        return float(-1)
-
-    def query(self, is_bahasa_indonesia: bool, query: str) -> dict:
-        content = self.__lpp.naturalize(is_bahasa_indonesia, query)
-        if (len(content) == 0):
-            return {}
-        
-        result          = {}
-        words           = content.split()
-        unique_words    = set(words)
-
-        for w in unique_words:
-            result[w] = self.find(is_bahasa_indonesia, w)
+            result.append(now['filename'])
         return result
+
+    def refreshAll(self):
+        self.refresh(True)
+        self.refresh(False)
+
+    def refresh(self, is_bahasa_indonesia):
+        files       = set(self.__docmanager.getDocuments(is_bahasa_indonesia))
+        rfiles      = set(self.getDocuments(is_bahasa_indonesia))
+        process     = files.difference(rfiles)
+        lang        = 'bahasa' if (is_bahasa_indonesia) else 'english'
+        
+        for f in process:
+            self.__idfdoc.writenl({'filename': f, 'language': lang})
+            self.process(is_bahasa_indonesia, f)
+
+    def reset(self, is_bahasa_indonesia):
+        saved = []
+        I = self.__dmanager.readIter_filter(None, not(is_bahasa_indonesia))
+        while (I.hasNext()):
+            saved.append(dict(I.next()))
+
+        self.__dmanager.write(saved)
+
+    def process(self, is_bahasa_indonesia: bool, filename: str):
+        lang        = 'bahasa' if (is_bahasa_indonesia) else 'english'
+        I           = self.__dmanager.readIter_filter(None, is_bahasa_indonesia)
+        currentData = {}
+        while (I.hasNext()):
+            now = dict(I.next())
+            currentData[now['term']] = int(now['count'])
+        
+        self.reset(is_bahasa_indonesia)
+
+        content         = self.__docmanager.find(is_bahasa_indonesia, filename)
+        if (len(content) == 0):
+            return
+
+        words        = content.split()
+        for w in words:
+            if w in currentData.keys():
+                currentData[w] += 1
+            else:
+                currentData[w] = 1
+
+        for x in currentData.keys():
+            self.__dmanager.writenl({'language': lang, 'term': x, 'count': currentData[x]})

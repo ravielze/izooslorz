@@ -6,8 +6,10 @@ from BDIter import biiter
 from pathlib import Path
 from LPP import LPP
 import re
+from pathlib import Path
+import os
 
-TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html']
+TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html', 'pdf']
 
 class DM():
     """DM stands for Document Manager."""
@@ -15,12 +17,15 @@ class DM():
     def __init__(self, lpp: LPP):
         self.__dmanager = Data('document', ['filename', 'language', 'length', 'first_sentence', 'content'])
         self.__lpp = lpp
+        if not os.path.exists('Documents'):
+            Path('Documents/bahasa').mkdir(parents=True, exist_ok=True)
+            Path('Documents/english').mkdir(parents=True, exist_ok=True)
 
     def getFileExtension(self, filename: str) -> str:
         return filename.split(".")[-1]
 
     def getPath(self, is_bahasa_indonesia: bool, filename: str) -> str:
-        return './documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
+        return './Documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
     
     def find(self, is_bahasa_indonesia: bool, filename: str) -> str:
         I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
@@ -49,14 +54,25 @@ class DM():
         return separator.join(arr)
 
     def getFirstSentence(self, content: str) -> str:
+        content = content.replace('\n',' ').replace('\\n', ' ')
+        words = content.split()
+        cleaned = []
+        for w in words:
+            w = re.sub(r'\s{2,}', ' ', w)
+            cleaned.append(w)
+        content = ' '.join(cleaned)
+
+        space_count = (content.count(' '))
         if "." in set(content):
             find = re.compile(r"^[^.]*")
-            return re.search(find, content).group(0)
-        else:
-            if len(content) >= 80:
-                return content[:80] + "..."
+            content = re.search(find, content).group(0)
+        if not("." in content):
+            if len(content) >= 100+space_count:
+                return content[:(100+space_count)] + "..."
             else:
-                return content[:80]
+                return content[:(100+space_count)] + "."
+        else:
+            return content + "."
 
     def getDocument(self, is_bahasa_indonesia: bool, filename: str) -> dict:
         I = self.__dmanager.readIter_filter(filename, is_bahasa_indonesia)
