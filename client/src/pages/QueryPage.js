@@ -1,6 +1,7 @@
 import "../App.css";
 import React from "react";
 import DocuQuery from "../components/Documents";
+import Table from "../components/TermTable";
 
 const QueryPage = () => {
     return (
@@ -9,6 +10,7 @@ const QueryPage = () => {
         </div>
         <div className="QueryPage-Body">
           <DocuQuery/>
+          <Table />
         </div>
       </div>
     );
