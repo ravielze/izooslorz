@@ -9,13 +9,13 @@ class Vezz():
     def __init__(self):
         self.__idf = Data('idf', ['language', 'term', 'idf'])
 
-    def dot(self, d: dict, d2: dict) -> float:
+    def dot(self, d: dict, d2: dict, documents: float) -> float:
         idf = {}
         I = self.__idf.readIter()
         I.next()
         while (I.hasNext()):
             now = dict(I.next())
-            idf[now["term"]] = float(now["idf"])
+            idf[now["term"]] = 1 + math.log(documents/float(now["idf"]))
         
         norm = 0
         for i in d.keys():
@@ -43,6 +43,7 @@ class Selch():
 
     def search(self, query: str, is_bahasa_indonesia: bool) -> list:
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        documents = len(files)
         sorter = []
         query = self.__lpp.naturalize(is_bahasa_indonesia, query)
         q = query.split()
@@ -56,7 +57,7 @@ class Selch():
             while (I.hasNext()):
                 now = dict(I.next())
                 cur_dict[now["term"]] = float(now["tf"])
-            sorter.append([Vezz().dot(d, cur_dict), f])
+            sorter.append([Vezz().dot(d, cur_dict, documents), f])
         sorter.sort(reverse=True)
         result = []
         for i in range (len(sorter)):
@@ -98,21 +99,21 @@ class Selch():
             terms.add(w)
         
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-        result = [["terms", "query"]]
-        ad = []
+        documents = len(files)
+        result = []
         for term in terms:
             if term in d.keys():
-                ad.append([term, d[term]])
+                result.append({'terms': term, 'query': d[term], 'documents': []})
             else:
-                ad.append([term, 0])
-        ad.sort()
-        result = result + ad
+                result.append({'terms': term, 'query': 0, 'documents': []})
         for f in files:
-            result[0].append(f)
             content         = self.__docmanager.find(is_bahasa_indonesia, f)
             words           = content.split()
-            for i in range(1, len(result)):
-                result[i].append(words.count(result[i][0]))
+            for i in range(len(result)):
+                result[i]['documents'].append({
+                    'doc': f,
+                    'value': words.count(result[i]['terms'])
+                })
         
         return result
             

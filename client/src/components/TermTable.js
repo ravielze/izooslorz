@@ -5,10 +5,8 @@ class Table extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            termTable: [
-                {'terms': 'everlast', 'query': '0', 'documents': [{'doc': '1.txt', 'value': 0},{'doc': '2.txt', 'value': 1},{'doc': '3.txt', 'value': 0}]},
-                {'terms': 'game', 'query': '0', 'documents': [{'doc': '1.txt', 'value': 0},{'doc': '2.txt', 'value': 2},{'doc': '3.txt', 'value': 0}]}
-            ]
+            termTable: [{'terms': 'game', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 2}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'life', 'query': 1, 'documents': [{'doc': '1.txt', 'value': 1}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'everlast', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 1}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'worth', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'live', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'never', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 1}]}, {'terms': 'learn', 'query': 1, 'documents': [{'doc': '1.txt', 
+            'value': 1}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 1}]}, {'terms': 'unexamin', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'stop', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 1}]}]
         }
     }
     renderTableData() {
