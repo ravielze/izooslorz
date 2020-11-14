@@ -9,8 +9,9 @@ import {
 
 import Upload from "./pages/upload.js";
 import Home from "./pages/Home.js";
-import AboutUs from "./pages/AboutUsPage.js"
-import QueryPage from "./pages/QueryPage.js"
+import AboutUs from "./pages/AboutUsPage.js";
+import QueryPage from "./pages/QueryPage.js";
+import WebScraping from "./pages/WebScraping.js";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path = "/home" component={Home}/>
           <Route path = "/aboutus" component={AboutUs}/>
           <Route path = "/QueryPage" component={QueryPage}/>
+          <Route path = "/WebScraping" component={WebScraping}/>
         </Switch>
       </Router>
     </div>

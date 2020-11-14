@@ -9,6 +9,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,7 @@ export default function NavBar() {
               </MenuItem>
             </Link>
           </Typography>
+          <Divider className={classes.divider} orientation="vertical" />
           <Typography variant="h7" className={classes.title}>
             <Link to="/QueryPage" style={{ textDecoration: "none" }}>
               <MenuItem style={{ paddingLeft: 13, color: "white" }}>
@@ -51,6 +53,7 @@ export default function NavBar() {
               </MenuItem>
             </Link>
           </Typography>
+          <Divider className={classes.divider} orientation="vertical" />
           <Typography variant="h7" className={classes.title}>
             <Link to="/Upload" style={{ textDecoration: "none" }}>
               <MenuItem style={{ paddingLeft: 13, color: "white" }}>
@@ -58,10 +61,19 @@ export default function NavBar() {
               </MenuItem>
             </Link>
           </Typography>
+          <Divider className={classes.divider} orientation="vertical" />
+          <Typography variant="h7" className={classes.title}>
+            <Link to="/WebScraping" style={{ textDecoration: "none" }}>
+              <MenuItem style={{ paddingLeft: 13, color: "white" }}>
+                Web Scraping
+              </MenuItem>
+            </Link>
+          </Typography>
+          <Divider className={classes.divider} orientation="vertical"/>
           <Typography variant="h7" className={classes.title}>
             <Link to="/AboutUs" style={{ textDecoration: "none" }}>
               <MenuItem style={{ paddingLeft: 13, color: "white" }}>
-                AboutUs
+                About Us
               </MenuItem>
             </Link>
           </Typography>
