@@ -7,7 +7,6 @@ from DM import TEXTRACT_EXT
 from LPP import LPP
 from DM import DM
 from TFIDF import TF, IDF
-from VS import Selch
 
 BAHASA_FOLDER = './Documents/bahasa'
 ENGLISH_FOLDER = './Documents/english'
@@ -19,14 +18,12 @@ tf = TF(dm)
 tf.refreshAll()
 idf = IDF(dm)
 idf.refreshAll()
-ss = Selch(dm, lpp)
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
 
 fileapp = Blueprint('fileapp', __name__)
-#EROR DISINI
 
 @fileapp.route('/file/bahasa/<filename>')
 def bahasafile(filename):
@@ -38,8 +35,6 @@ def englishfile(filename):
 
 fileapp.add_url_rule('/file/bahasa/<filename>', 'bahasafile', build_only=True)
 fileapp.add_url_rule('/file/english/<filename>', 'englishfile', build_only=True)
-
-cache = {'IS_READING': False}
 
 @fileapp.route('/upload', methods=['GET', 'POST'])
 def uf():
@@ -61,7 +56,6 @@ def uf():
             return jsonify({'message': 'File not found.'})
         if request.form.get('lang') in ['bahasa_indonesia', 'english']:
             if file and allowed_file(file.filename):
-                cache['IS_READING'] = True
                 filename = str(int(time.time())) + "_" + secure_filename(file.filename)
                 folder = BAHASA_FOLDER if (request.form.get('lang') == 'bahasa_indonesia') else ENGLISH_FOLDER
                 file.save(os.path.join(folder, filename))
