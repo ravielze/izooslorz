@@ -125,9 +125,33 @@
   flex-direction: column;
   align-items: center;
 }
-a {
-  color: #FFF;
+
+#title {
+  text-align: center;
+  font-family: arial, sans-serif;
 }
-a:hover {
-   color: #00F
+
+#termTable {
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+  width: 100%;
+}
+
+#termTable td, #termTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#termTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#termTable tr:hover {background-color: #ddd;}
+
+#termTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
 }

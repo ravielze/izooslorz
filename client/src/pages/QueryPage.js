@@ -2,6 +2,7 @@ import "../App.css";
 import React from "react";
 import DocuQuery from "../components/Documents";
 import NavBar from "../components/NavBar.js";
+import Table from "../components/TermTable";
 
 const QueryPage = () => {
   return (
@@ -10,7 +11,8 @@ const QueryPage = () => {
       <div className="Container">
         <div className="QueryPage-Head"></div>
         <div className="QueryPage-Body">
-          <DocuQuery />
+          <DocuQuery/>
+          <Table />
         </div>
       </div>
     </div>

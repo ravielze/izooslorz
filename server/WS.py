@@ -21,12 +21,6 @@ class Scraper():
         self.__lpp = lpp
         self.__data = Data('webscraping', ['filename', 'language', 'url'])
 
-    def refresh(self):
-        I = self.__data.readIter()
-        I.next()
-        while (I.hasNext()):
-            now = dict(I.next())
-
     def getPath(self, is_bahasa_indonesia: bool, filename: str) -> str:
         return './Documents/' + ('bahasa' if (is_bahasa_indonesia) else 'english')+"/" + filename
 
@@ -34,7 +28,7 @@ class Scraper():
         now = str(int(time.time()))
         return ''.join(random.choice(string.ascii_letters) for _ in range(((N+1)//2)))+ now[:N//2]
 
-    def htmlScraper(self, is_bahasa_indonesia: bool, url: str) -> bool:
+    def htmlScraper(self, is_bahasa_indonesia: bool, url: str) -> tuple:
         success = True
         lang = 'bahasa' if (is_bahasa_indonesia) else 'english'
         try:
@@ -51,7 +45,8 @@ class Scraper():
             self.__data.writenl({'filename': fname, 'language': lang, 'url': url})
         except:
             success = False
-        return success
+            fname = None
+        return (success, fname)
     
     def findUrl(self, filename: str, is_bahasa_indonesia: bool) -> str:
         I = self.__data.readIter_filter(filename, is_bahasa_indonesia)

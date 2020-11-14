@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 import os
 
-TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html']
+TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html', 'pdf']
 
 class DM():
     """DM stands for Document Manager."""
@@ -54,7 +54,7 @@ class DM():
         return separator.join(arr)
 
     def getFirstSentence(self, content: str) -> str:
-        content = content.replace('\n',' ')
+        content = content.replace('\n',' ').replace('\\n', ' ')
         words = content.split()
         cleaned = []
         for w in words:
@@ -67,10 +67,10 @@ class DM():
             find = re.compile(r"^[^.]*")
             content = re.search(find, content).group(0)
         if not("." in content):
-            if len(content) >= 80+space_count:
-                return content[:(80+space_count)] + "..."
+            if len(content) >= 100+space_count:
+                return content[:(100+space_count)] + "..."
             else:
-                return content[:(80+space_count)] + "."
+                return content[:(100+space_count)] + "."
         else:
             return content + "."
 
