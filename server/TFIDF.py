@@ -1,8 +1,6 @@
 from Data import Data
 from DM import DM
-from LPP import LPP
 from BDIter import biiter
-import math
 
 """TF-IDF stands for Term Frequency and Inverse Document Frequency.
     Source: https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/"""
@@ -75,7 +73,6 @@ class IDF():
         lang        = 'bahasa' if (is_bahasa_indonesia) else 'english'
         
         for f in process:
-            self.__idfdoc.writenl({'filename': f, 'language': lang})
             self.process(is_bahasa_indonesia, f)
 
     def reset(self, is_bahasa_indonesia):
@@ -90,6 +87,7 @@ class IDF():
         lang        = 'bahasa' if (is_bahasa_indonesia) else 'english'
         I           = self.__dmanager.readIter_filter(None, is_bahasa_indonesia)
         currentData = {}
+        self.__idfdoc.writenl({'filename': filename, 'language': lang})
         while (I.hasNext()):
             now = dict(I.next())
             currentData[now['term']] = int(now['count'])

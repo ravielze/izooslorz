@@ -8,6 +8,7 @@ from LPP import LPP
 import re
 from pathlib import Path
 import os
+from threading import Thread
 
 TEXTRACT_EXT = ['docx', 'doc', 'pptx', 'txt', 'json', 'htm', 'html', 'pdf']
 
@@ -21,6 +22,35 @@ class DM():
             Path('Documents/bahasa').mkdir(parents=True, exist_ok=True)
             Path('Documents/english').mkdir(parents=True, exist_ok=True)
 
+    def onload(self):
+
+        def processEnglish():
+            print(f"Checking Document English...")
+            docenglish = self.getDocuments(False)
+            for filename in os.listdir(Path('Documents/english')):
+                if filename in docenglish:
+                    continue
+                if self.getFileExtension(filename) in TEXTRACT_EXT:
+                    print(f"{filename}: Reading.")
+                    self.read(False, filename)
+            print(f"Checking Document English... DONE")
+        
+        def processBahasa():
+            print(f"Checking Document Bahasa Indonesia...")
+            docbahasa = self.getDocuments(True)
+            for filename in os.listdir(Path('Documents/bahasa')):
+                if filename in docbahasa:
+                    continue
+                if self.getFileExtension(filename) in TEXTRACT_EXT:
+                    self.read(True, filename)
+                    print(f"{filename}: Reading.")
+            print(f"Checking Document Bahasa Indonesia... DONE")
+            
+        thread2 = Thread(target=processEnglish)
+        thread2.start()
+        thread = Thread(target=processBahasa)
+        thread.start()
+
     def getFileExtension(self, filename: str) -> str:
         return filename.split(".")[-1]
 
@@ -32,7 +62,7 @@ class DM():
         if (I.hasNext()):
             now = dict(I.next())
             return now['content']
-        return None
+        return ""
 
     def getDocuments(self, is_bahasa_indonesia: bool) -> list:
         """ Get List of Document's Name """
@@ -86,7 +116,7 @@ class DM():
         if not fileExist:
             return ""
         content = self.find(is_bahasa_indonesia, filename)
-        if (content == None):
+        if (len(content) == 0):
             content = ""
             ext = self.getFileExtension(filename)
             if ext == 'pdf':

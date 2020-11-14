@@ -39,13 +39,12 @@ class Scraper():
             title           = self.__lpp.lemmatize(soup.find('title').string).replace(' ', '')
             fname           = title + "_" + self.randomNaming(9) + ".html"
             f               = open(self.getPath(is_bahasa_indonesia, fname), 'wb')
-
             f.write(webContent)
             f.close()
             self.__data.writenl({'filename': fname, 'language': lang, 'url': url})
-        except:
+        except Exception as e:
             success = False
-            fname = None
+            fname = str(e)
         return (success, fname)
     
     def findUrl(self, filename: str, is_bahasa_indonesia: bool) -> str:
