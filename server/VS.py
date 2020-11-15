@@ -25,8 +25,7 @@ class Vezz():
         norm **= 0.5
         norm2 = 0
         for i in d2.keys():
-            if i in d.keys():
-                norm2 += (d2[i]**2)
+            norm2 += (d2[i]**2)
         norm2 **= 0.5
 
         result = 0
@@ -167,7 +166,7 @@ class Selch():
                 result.append({'terms': term, 'query': d[term], 'documents': documents})
             else:
                 result.append({'terms': term, 'query': 0, 'documents': documents})
-                
+
         return result
             
         
