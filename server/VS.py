@@ -9,9 +9,6 @@ LINK_PREFIX = 'http://localhost:5000/file/'
 class Vezz():
     """Vezz stands for Vectorizer"""
 
-    def __init__(self):
-        self.__idf = Data('idf', ['language', 'term', 'count'])
-
     def dot(self, d: dict, d2: dict, idf: dict, documents: float) -> float:
         norm = 0
         for i in d.keys():
@@ -46,8 +43,9 @@ class Selch():
 
     def search(self, query: str, is_bahasa_indonesia: bool) -> list:
         idf = {}
-        I = self.__idf.readIter()
-        I.next()
+        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        documents = len(files)
+        I = self.__idf.readIter_filter(None, is_bahasa_indonesia)
         i = 0
         while (I.hasNext()):
             i += 1
@@ -57,17 +55,15 @@ class Selch():
             except:
                 print(f"Line {i} Error.")
                 continue
-
-        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-        documents = len(files)
         sorter = []
         query = self.__lpp.naturalize(is_bahasa_indonesia, query)
         q = query.split()
         query_set = set(q)
         d = {}
         for w in query_set:
-            if i in idf.keys():
-                d[w] = q.count(w)
+            if not(w in idf.keys()):
+                continue
+            d[w] = q.count(w)
         for f in files:
             I = self.__tf.readIter_filter(f, is_bahasa_indonesia)
             cur_dict = {}
