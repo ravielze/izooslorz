@@ -11,6 +11,7 @@ import Home from "./pages/Home.js";
 import AboutUs from "./pages/AboutUsPage.js";
 import QueryPage from "./pages/QueryPage.js";
 import WebScraping from "./pages/WebScraping.js";
+import PersonList from "./pages/PersonList.js";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path = "/aboutus" component={AboutUs}/>
           <Route path = "/QueryPage/:query/:lang" component={QueryPage}/>
           <Route path = "/WebScraping" component={WebScraping}/>
+          <Route path = "/tes" component={PersonList}/>
         </Switch>
       </Router>
     </div>
