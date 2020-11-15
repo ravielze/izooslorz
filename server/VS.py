@@ -115,6 +115,18 @@ class Selch():
         return result
     
     def termTable(self, query: str, is_bahasa_indonesia: bool) -> list:
+        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        
+        container = {}
+        I = self.__tf.readIter_filter(None, is_bahasa_indonesia)
+        i = 0
+        while (I.hasNext()):
+            i += 1
+            now = dict(I.next())
+            if not(now["term"] in container):
+                container[now["term"]] = {}
+            container[now["term"]][now["filename"]] = now["tf"]
+        
         terms = set([])
         I = self.__idf.readIter()
         I.next()
@@ -130,25 +142,32 @@ class Selch():
             d[w] = q.count(w)
             terms.add(w)
         
-        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-        documents = len(files)
         result = []
         for term in terms:
-            if term in d.keys():
-                result.append({'terms': term, 'query': d[term], 'documents': []})
+            documents = []
+            if term in container.keys():
+                for f in files:
+                    if f in container[term].keys():
+                        documents.append({
+                            'doc': f,
+                            'value': container[term][f]
+                        })
+                    else:
+                        documents.append({
+                            'doc': f,
+                            'value': 0
+                        })
             else:
-                result.append({'terms': term, 'query': 0, 'documents': []})
-        for f in files:
-            content         = self.__docmanager.find(is_bahasa_indonesia, f)
-            if (len(content) == 0):
-                continue
-            words           = content.split()
-            for i in range(len(result)):
-                result[i]['documents'].append({
-                    'doc': f,
-                    'value': words.count(result[i]['terms'])
-                })
-        
+                for f in files:
+                    documents.append({
+                        'doc': f,
+                        'value': 0
+                    })
+            if term in d.keys():
+                result.append({'terms': term, 'query': d[term], 'documents': documents})
+            else:
+                result.append({'terms': term, 'query': 0, 'documents': documents})
+                
         return result
             
         
