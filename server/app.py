@@ -61,16 +61,17 @@ def uf():
             return jsonify({'message': 'Language not found.'})
     return jsonify({}), 404
 
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['POST'])
 def search():
-    if request.method == 'GET':
-        if 'keyword' in request.args and 'lang' in request.args:
-            if not(request.args.get('lang') in ['id', 'en']):
+    if request.method == 'POST':
+        if 'keyword' in request.form and 'lang' in request.form:
+            if not(request.form.get('lang') in ['id', 'en']):
                 return jsonify({'message': 'Language not found.'})
             dur = time.time()*(-1)
-            data = service.ss.search(request.args.get('keyword'), (request.args.get('lang') == 'id'))
+            data = service.ss.search(request.form.get('keyword'), (request.form.get('lang') == 'id'))
+            ttab = service.ss.termTable(request.form.get('keyword'), (request.form.get('lang') == 'id'))
             dur += time.time()
-            return jsonify({'time_in_ms': dur*1000,'data': data})
+            return jsonify({'time_in_ms': dur*1000,'data': data, 'termtable': ttab})
         else:
             return jsonify({})
 
