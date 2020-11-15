@@ -31,7 +31,7 @@ export default function ControlledOpenSelect(props) {
 
   return (
     <div>
-      {/* <FormControl className={classes.formControl} style={{marginLeft: 20}}> */}
+      <FormControl className={classes.formControl} style={{marginLeft: 20}}>
         <InputLabel id="demo-controlled-open-select-label">Language</InputLabel>
         <Select
           labelId="demo-controlled-open-select-label"
@@ -47,7 +47,7 @@ export default function ControlledOpenSelect(props) {
           <MenuItem value={"bahasa_indonesia"}>Bahasa Indonesia</MenuItem>
           <MenuItem value={"english"}>English</MenuItem>
         </Select>
-      {/* </FormControl> */}
+      </FormControl>
     </div>
   );
 }

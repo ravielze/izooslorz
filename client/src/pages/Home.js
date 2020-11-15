@@ -17,7 +17,7 @@ const Home = () => {
   }
 
   const [search, setSearch] = useState("");
-  const [lang,setLang] = useState("bahasa_indonesia");
+  const [lang, setLang] = useState("bahasa_indonesia");
 
   return (
     <div>
