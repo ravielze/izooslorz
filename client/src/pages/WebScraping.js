@@ -5,7 +5,7 @@ import LinkScraping from "../components/LinkScraping.js";
 import ControlledOpenSelect from "../components/DropDown.js";
 
 import Image from "../img/logo.jpg";
-import Axios from "axios";
+import axios from "axios";
 
 const WebScraping = () => {
   const [search, setSearch] = useState("");
@@ -15,13 +15,13 @@ const WebScraping = () => {
     if (ev.key === "Enter") {
       const formData = new FormData();
 
-      formData.append("Url", search);
+      formData.append("url", search);
 
       formData.append("lang", lang);
 
       console.log(search);
       console.log(lang);
-      Axios.post("localhost:5000/webscraping", formData);
+      axios.post("http://localhost:5000/webscraping", formData);
     }
   };
 

@@ -17,11 +17,12 @@ const QueryPage = (props) => {
       const lang_converted = lang[props.match.params.lang]
       const search = props.match.params.query
     axios
-    .post(`localhost:5000/search?keyword=${search}&lang=${lang_converted}`)
+    .post(`localhost:5000/search`, {"keyword": search, "lang": lang_converted})
     .then((res) => {
         res = res.data.data
         setData(res)
     })
+    console.log(data);
 
   });
   return (

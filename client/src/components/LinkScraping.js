@@ -2,8 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     width: 400,
-    backgroundColor: "#D3BDFF",
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -31,8 +28,8 @@ export default function LinkScraping(props) {
         value = {props.value}
         className={classes.input}
         onChange = {(e) => props.handleChange(e.target.value)}
-        placeholder="Search Dokumen"
-        inputProps={{ "aria-label": "search dokumen" }}
+        placeholder="Masukkan Link"
+        inputProps={{ "aria-label": "masukkan link" }}
         onKeyPress={(ev) => props.handleKeyPress(ev)}
       />
       {/* <IconButton type="button" className={classes.iconButton} aria-label="search">

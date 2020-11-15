@@ -4,7 +4,6 @@ import Image from "../img/logo.jpg";
 import Viel from "../img/Viel.jpg";
 import Kinan from "../img/Kinan.jpg";
 import Kaer from "../img/Kaer.jpg";
-import Button from "@material-ui/core/Button";
 import NavBar from "../components/NavBar";
 
 const AboutUsPage = () => {
@@ -41,7 +40,7 @@ const AboutUsPage = () => {
               <p>13519002 </p>
               <p>Teknik Informatika ITB</p>
               <p>Jakarta</p>
-              <p>Motto : </p>
+              <p>3 minggu lagi.</p>
             </div>
           </div>
           <div className="member">
@@ -66,7 +65,7 @@ const AboutUsPage = () => {
               <p>13519191</p>
               <p>Teknik Informatika ITB</p>
               <p>Medan</p>
-              <p>Motto : Wubbalubbadubdub</p>
+              <p>Aku sayang kamu. </p>
             </div>
           </div>
         </div>

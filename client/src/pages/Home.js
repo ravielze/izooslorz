@@ -22,9 +22,6 @@ const Home = () => {
   return (
     <div>
       <NavBar/>
-      <p className="HelloUserText" align="right">
-        Welcome, user!
-      </p>
       <header className="App-header">
         <img src={Image} class="App-logo" alt=""></img>
         <p className="SearchComponents">

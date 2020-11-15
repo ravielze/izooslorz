@@ -45,12 +45,6 @@ class upload extends Component {
       return (
         <div>
           <h2>File Details:</h2>
-          <p>File Name: {this.state.selectedFile.name}</p>
-          <p>File Type: {this.state.selectedFile.type}</p>
-          <p>
-            Last Modified:{" "}
-            {this.state.selectedFile.lastModifiedDate.toDateString()}
-          </p>
           <ControlledOpenSelect value={this.state.lang} handleChange={this.handleChange} />
         </div>
       );
