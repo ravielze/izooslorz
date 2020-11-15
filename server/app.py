@@ -5,8 +5,10 @@ from IZOOSLORZ import IZOOSLORZ
 import time, os
 from threading import Thread
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/server/*": {"origins": "*"}})
 BAHASA_FOLDER = './Documents/bahasa'
 ENGLISH_FOLDER = './Documents/english'
 ALLOWED_EXT = set(TEXTRACT_EXT.copy())
