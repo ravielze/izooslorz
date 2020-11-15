@@ -19,8 +19,7 @@
 
 ## Requirements
 To run this on your pc, you need:
-* Python 3.7.9 or greater
-* Microsoft Visual C++ 14.0 or greater (for pdf extracting)
+* Python 3.7.X (Recommended Python 3.7.9)
 
 ## Technologies
 * Flask
