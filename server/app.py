@@ -66,12 +66,15 @@ def uf():
 @app.route('/search', methods=['POST'])
 def search():
     if request.method == 'POST':
-        if 'keyword' in request.form and 'lang' in request.form:
-            if not(request.form.get('lang') in ['id', 'en']):
+        data = request.get_json()
+        if 'keyword' in data.keys() and 'lang' in data.keys():
+            lang = data['lang']
+            kw = data['keyword']
+            if not(lang in ['id', 'en']):
                 return jsonify({'message': 'Language not found.'})
             dur = time.time()*(-1)
-            data = service.ss.search(request.form.get('keyword'), (request.form.get('lang') == 'id'))
-            ttab = service.ss.termTable(request.form.get('keyword'), (request.form.get('lang') == 'id'))
+            data = service.ss.search(kw, (lang == 'id'))
+            ttab = service.ss.termTable(kw, (lang == 'id'))
             dur += time.time()
             return jsonify({'time_in_ms': dur*1000,'data': data, 'termtable': ttab})
         else:
@@ -90,17 +93,20 @@ def webscrape():
         print(f"{filename}: Done.")
 
     if request.method == 'POST':
+        data = request.get_json()
         if 'lang' not in request.form:
             return jsonify({'message': 'Language not found.'})
+        lang = data['lang']
         if not(request.form.get('lang') in ['english', 'bahasa_indonesia']):
             return jsonify({'message': 'Language not found.'})
         if 'url' not in request.form:
             return jsonify({'message': 'Url not found.'})
-        scrape = service.sc.htmlScraper((request.form.get('lang') == 'bahasa_indonesia'), request.form.get('url'))
+        url = data['url']
+        scrape = service.sc.htmlScraper((lang == 'bahasa_indonesia'), url)
         if not(scrape[0]):
             return jsonify({'message': 'Error. ' + scrape[1]})
         else:
-            thread = Thread(target=process, kwargs={'filename': scrape[1], 'lang': (request.form.get('lang') == 'bahasa_indonesia')})
+            thread = Thread(target=process, kwargs={'filename': scrape[1], 'lang': (lang == 'bahasa_indonesia')})
             thread.start()
         return jsonify({'message': 'Success.'})
 

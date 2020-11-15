@@ -13,14 +13,16 @@ export default class PersonList extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const user = {
+    const search = {
       'keyword': this.state.name,
       'lang': "en"
     };
     console.log(user);
-    axios.post(`http://localhost:5000/search`, user)
+    axios.post(`http://localhost:5000/search`, search)
       .then(res => {
         console.log(res.data.data);
+        console.log(res.data.time_in_ms);
+        console.log(res.data.termtable);
       })
   }
 
