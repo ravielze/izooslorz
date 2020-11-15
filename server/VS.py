@@ -93,7 +93,7 @@ class Selch():
             url = self.__sc.findUrl(sorter[i][1], is_bahasa_indonesia)
             if len(url) <= 0:
                 url = LINK_PREFIX + ('bahasa/' if is_bahasa_indonesia else 'english/') + sorter[i][1]
-            cur_dict = {"namafile": sorter[i][1], "jumlahkata": d["length"],"kecocokan": float('%.4f' % sorter[i][0]), "firstsentence": d["first_sentence"], "url": url}
+            cur_dict = {"namafile": sorter[i][1], "jumlahkata": d["length"],"kecocokan": float('%.5f' % sorter[i][0]), "firstsentence": d["first_sentence"], "url": url}
             result.append(cur_dict)
             
         return result
