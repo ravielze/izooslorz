@@ -146,7 +146,7 @@
 
 #termTable tr:nth-child(even){background-color: #f2f2f2;}
 
-#termTable tr:hover {background-color: #ddd;}
+#termTable tr:hover {background-color: rgb(165, 149, 149);}
 
 #termTable th {
   padding-top: 12px;
@@ -154,4 +154,39 @@
   text-align: center;
   background-color: #4CAF50;
   color: white;
+}
+
+.HowToUse {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+}
+.HowToUseRight {
+  margin-left: 20px;
+}
+.developers {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.member {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 530px;
+  border-radius: 50px;
+  background-color: #ddd;
+}
+.memberRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 10px;
+  align-items: flex-start;
+}
+.memberName {
+  width: 330px;
+  background-color: #61dafb;
+  margin-left: -10px;
 }
