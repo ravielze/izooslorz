@@ -21,7 +21,7 @@ class TF():
         unique_words    = set(words)
 
         for w in unique_words:
-            tf          = float(words.count(w))/float(doc_length)
+            tf          = int(words.count(w))
             
             self.__dmanager.writenl({'filename': filename, 'language': lang, 'term': w, 'tf': tf})
 

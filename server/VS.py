@@ -14,6 +14,8 @@ class Vezz():
 
     def multiplier(self, d1: dict, d2: dict):
         for i in d1.keys():
+            if not(i in d2.keys()):
+                continue
             d1[i] *= d2[i]
 
     def dot(self, d: dict, d2: dict) -> float:

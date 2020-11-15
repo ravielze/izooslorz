@@ -69,9 +69,8 @@ def search():
                 return jsonify({'message': 'Language not found.'})
             dur = time.time()*(-1)
             data = service.ss.search(request.args.get('keyword'), (request.args.get('lang') == 'id'))
-            termtable = service.ss.termTable(request.args.get('keyword'), (request.args.get('lang') == 'id'))
             dur += time.time()
-            return jsonify({'time_in_ms': dur*1000,'data': data, 'termtable': termtable})
+            return jsonify({'time_in_ms': dur*1000,'data': data})
         else:
             return jsonify({})
 
