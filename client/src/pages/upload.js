@@ -37,7 +37,7 @@ class upload extends Component {
     console.log(this.state.lang);
     console.log(this.state.selectedFile);
 
-    //axios.post("api/uploadfile", formData);
+    axios.post("http://localhost:5000/upload", formData);
   };
 
   fileData = () => {
