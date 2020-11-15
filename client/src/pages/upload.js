@@ -3,42 +3,43 @@ import React, { Component } from "react";
 
 import Image from "../img/logo.jpg";
 import NavBar from "../components/NavBar.js";
+import ControlledOpenSelect from "../components/DropDown.js";
 
 class upload extends Component {
   state = {
-    // Initially, no file is selected
     selectedFile: null,
+    lang: "bahasa_indonesia",
   };
 
-  // On file select (from the pop up)
   onFileChange = (event) => {
     console.log(event.target);
-    // Update the state
-    this.setState({ selectedFile: event.target.files[0] });
+    this.setState({ ...this.state, selectedFile: event.target.files[0] });
   };
 
-  // On file upload (click the upload button)
+  handleChange = (lang) => {
+    this.setState({ ...this.state, lang:lang});
+  }
+
   onFileUpload = () => {
-    // Create an object of formData
     const formData = new FormData();
 
-    // Update the formData object
     formData.append(
-      "myFile",
+      "file",
       this.state.selectedFile,
       this.state.selectedFile.name
     );
 
-    // Details of the uploaded file
+    formData.append(
+      "lang",
+      this.state.lang,
+    )
+
+    console.log(this.state.lang);
     console.log(this.state.selectedFile);
 
-    // Request made to the backend api
-    // Send formData object
-    axios.post("api/uploadfile", formData);
+    //axios.post("api/uploadfile", formData);
   };
 
-  // File content to be displayed after
-  // file upload is complete
   fileData = () => {
     if (this.state.selectedFile) {
       return (
@@ -50,9 +51,7 @@ class upload extends Component {
             Last Modified:{" "}
             {this.state.selectedFile.lastModifiedDate.toDateString()}
           </p>
-          <a href="/home">
-            <button>Back</button>
-          </a>
+          <ControlledOpenSelect value={this.state.lang} handleChange={this.handleChange} />
         </div>
       );
     } else {
@@ -60,9 +59,7 @@ class upload extends Component {
         <div>
           <br />
           <h4>Pilih file dulu, baru tekan tombol upload.</h4>
-          <a href="/home">
-            <button>Back</button>
-          </a>
+          <ControlledOpenSelect value={this.state.lang} handleChange={this.handleChange}/>
         </div>
       );
     }

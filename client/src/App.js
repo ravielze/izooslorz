@@ -22,7 +22,7 @@ function App() {
           <Route path = "/upload" component={Upload}/> 
           <Route path = "/home" component={Home}/>
           <Route path = "/aboutus" component={AboutUs}/>
-          <Route path = "/QueryPage" component={QueryPage}/>
+          <Route path = "/QueryPage/:query/:lang" component={QueryPage}/>
           <Route path = "/WebScraping" component={WebScraping}/>
         </Switch>
       </Router>

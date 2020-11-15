@@ -22,19 +22,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LinkScraping() {
+export default function LinkScraping(props) {
   const classes = useStyles();
 
   return (
     <Paper component="form" className={classes.root}>
       <InputBase
+        value = {props.value}
         className={classes.input}
-        placeholder="Insert Link here"
-        inputProps={{ 'aria-label': 'search web page' }}
+        onChange = {(e) => props.handleChange(e.target.value)}
+        placeholder="Search Dokumen"
+        inputProps={{ "aria-label": "search dokumen" }}
+        onKeyPress={(ev) => props.handleKeyPress(ev)}
       />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
+      {/* <IconButton type="button" className={classes.iconButton} aria-label="search">
         <SearchIcon />
-      </IconButton>
+      </IconButton> */}
     </Paper>
   );
 }

@@ -25,20 +25,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomizedInputBase() {
+export default function CustomizedInputBase(props) {
   const classes = useStyles();
   return (
     <Paper component="form" className={classes.root}>
       <InputBase
+        value = {props.value}
         className={classes.input}
+        onChange = {(e) => props.handleChange(e.target.value)}
         placeholder="Search Dokumen"
-        inputProps={{ "aria-label": "search google maps" }}
-        onKeyPress={(ev) => {
-          console.log(`Pressed keyCode ${ev.key}`);
-          if (ev.key === 'Enter') {
-
-          }
-        }}
+        inputProps={{ "aria-label": "search dokumen" }}
+        onKeyPress={(ev) => props.handleKeyPress(ev)}
       />
       <IconButton
         type="submit"

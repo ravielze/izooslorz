@@ -47,14 +47,6 @@ export default function NavBar() {
           </Typography>
           <Divider className={classes.divider} orientation="vertical" />
           <Typography variant="h7" className={classes.title}>
-            <Link to="/QueryPage" style={{ textDecoration: "none" }}>
-              <MenuItem style={{ paddingLeft: 13, color: "white" }}>
-                Query Page
-              </MenuItem>
-            </Link>
-          </Typography>
-          <Divider className={classes.divider} orientation="vertical" />
-          <Typography variant="h7" className={classes.title}>
             <Link to="/Upload" style={{ textDecoration: "none" }}>
               <MenuItem style={{ paddingLeft: 13, color: "white" }}>
                 Upload
