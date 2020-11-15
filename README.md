@@ -19,33 +19,48 @@
 
 ## Requirements
 To run this on your pc, you need:
-* Python 3.7.X (Recommended Python 3.7.9)
+* Python 3.7.9 or greater
+* Microsoft Visual C++ 14.0 or greater (for pdf extracting)
 
 ## Technologies
 * Flask
 * Textract - Extract Content from All Document Extension
 * NLTK - Stemming & Stopword for English
 * Sastrawi - Stemming & Stopword for Bahasa Indonesia
+* NPM
+* Node
+* @material-ui
 
 ## Setup
-Describe how to install / setup your local environement / add link to demo version.
+First, you need to install pip :
+1. Download "get-pip.py" file on pypa.io
+2. Run cmd as Administrator
+3. Type in the following command :
+```$ python get-pip.py```
 
-## Code Examples
-Show examples of usage:
-`put-your-code-here`
+Second, you need to install the dependencies. All the required dependencies can be found in the folder server by the name "requirements.txt"
+
+Third, you need NPM and node to start the development server. NPM and node can be installed by running cmd as administrator and by typing in the following command :
+```$ npm install npm@latest -g```
+
+Fourth, you need to install the dependencies to start the client server. The dependencies are as following :
+1. @material-ui/core, which can be installed by going to the directory of this project on cmd ran as administrator and by typing in
+```$ npm install @material-ui/core```
+2. @material-ui/icons, which can be installed by going to the directory of this project on cmd ran as administrator and by typing in
+```$ npm install @material-ui/icons```
+3. axios, which can be installed by going to the directory of this project on cmd ran as administrator and by typing in
+```$ npm install axios```
+4. react-router-dom, which can be installed by going to the directory of this project on cmd ran as administrator and by typing in
+```$ npm install --save react-router-dom```
 
 ## Features
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
-
-To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* 
+* 
+* 
 
 ## Inspiration
-Add here credits. Project inspired by..., based on...
+Project inspired by google, based on cosine similarity theory.
 
 ## Contact
 // Todo
