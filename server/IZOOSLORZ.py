@@ -16,4 +16,4 @@ class IZOOSLORZ():
         self.idf = IDF(self.dm)
         self.idf.refreshAll()
         self.sc = Scraper(self.lpp)
-        self.ss = Selch(self.dm, self.lpp, self.sc)
+        self.ss = Selch(self.dm, self.lpp, self.sc, self.tf, self.idf)

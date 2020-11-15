@@ -2,12 +2,22 @@ from Data import Data
 from DM import DM
 from LPP import LPP
 from WS import Scraper
+from TFIDF import TF, IDF
 import math
 
 LINK_PREFIX = 'http://localhost:5000/file/'
 
-class Vezz():
-    """Vezz stands for Vectorizer"""
+class Selch():
+    """ Selch stands for Search """
+    
+    def __init__(self, docmanager: DM, lpp: LPP, sc: Scraper, tf: TF, idf: IDF):
+        self.__tf = tf.getDataManager()
+        self.__idf = idf.getDataManager()
+        self.__docmanager = docmanager
+        self.__lpp = lpp
+        self.__sc = sc
+        self.__isChanged = True
+        self.__cache = {}
 
     def dot(self, d: dict, d2: dict, idf: dict, documents: float) -> float:
         norm = 0
@@ -31,30 +41,33 @@ class Vezz():
             finalresult = 0
         return finalresult
 
-class Selch():
-    """ Selch stands for Search """
-    
-    def __init__(self, docmanager: DM, lpp: LPP, sc: Scraper):
-        self.__tf = Data('tf', ['filename', 'language', 'term', 'tf'])
-        self.__idf = Data('idf', ['language', 'term', 'count'])
-        self.__docmanager = docmanager
-        self.__lpp = lpp
-        self.__sc = sc
+    def getIDF(self, documents: int, is_bahasa_indonesia: bool) -> dict:
+        idf = {}
+        if self.__isChanged == False:
+            self.__isChanged = (self.__tf.isChanged()) or (self.__idf.isChanged())
+
+        if self.__isChanged == False:
+            print("T")
+            return self.__cache
+
+        if self.__isChanged:
+            I = self.__idf.readIter_filter(None, is_bahasa_indonesia)
+            i = 0
+            while (I.hasNext()):
+                i += 1
+                now = dict(I.next())
+                try:
+                    idf[now["term"]] = 1 + math.log(documents/float(now["count"]))
+                except:
+                    print(f"Line {i} Error.")
+                    continue
+        self.__cache = idf
+        return idf
 
     def search(self, query: str, is_bahasa_indonesia: bool) -> list:
-        idf = {}
         files = self.__docmanager.getDocuments(is_bahasa_indonesia)
         documents = len(files)
-        I = self.__idf.readIter_filter(None, is_bahasa_indonesia)
-        i = 0
-        while (I.hasNext()):
-            i += 1
-            now = dict(I.next())
-            try:
-                idf[now["term"]] = 1 + math.log(documents/float(now["count"]))
-            except:
-                print(f"Line {i} Error.")
-                continue
+        idf = self.getIDF(documents, is_bahasa_indonesia)
         sorter = []
         query = self.__lpp.naturalize(is_bahasa_indonesia, query)
         q = query.split()
@@ -70,7 +83,7 @@ class Selch():
             while (I.hasNext()):
                 now = dict(I.next())
                 cur_dict[now["term"]] = float(now["tf"])
-            sorter.append([Vezz().dot(d, cur_dict, idf, float(documents)), f])
+            sorter.append([self.dot(d, cur_dict, idf, float(documents)), f])
         sorter.sort(reverse=True)
         result = []
         for i in range (len(sorter)):
@@ -97,7 +110,7 @@ class Selch():
         while (I.hasNext()):
             now = dict(I.next())
             d2[now["term"]] = float(now["tf"])
-        result["kecocokan"] = Vezz().dot(d, d2)
+        result["kecocokan"] = self.dot(d, d2)
         return result
     
     def termTable(self, query: str, is_bahasa_indonesia: bool) -> list:

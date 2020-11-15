@@ -10,6 +10,9 @@ class TF():
         self.__dmanager = Data('tf', ['filename', 'language', 'term', 'tf'])
         self.__docmanager = docmanager
 
+    def getDataManager(self) -> Data:
+        return self.__dmanager
+
     def process(self, is_bahasa_indonesia: bool, filename: str):
         content         = self.__docmanager.find(is_bahasa_indonesia, filename)
         if (len(content) == 0):
@@ -52,6 +55,9 @@ class IDF():
         self.__dmanager = Data('idf', ['language', 'term', 'count'])
         self.__idfdoc = Data('idfdoc', ['filename', 'language'])
         self.__docmanager = docmanager
+
+    def getDataManager(self) -> Data:
+        return self.__dmanager
 
     def getDocuments(self, is_bahasa_indonesia: bool) -> list:
         """ Get List of Document's Name """

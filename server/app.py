@@ -71,7 +71,10 @@ def search():
             data = service.ss.search(request.args.get('keyword'), (request.args.get('lang') == 'id'))
             termtable = service.ss.termTable(request.args.get('keyword'), (request.args.get('lang') == 'id'))
             dur += time.time()
-            return jsonify({'time_in_ms': dur*1000,'data': data, 'termtable': termtable})
+            result = {'time_in_ms': dur*1000,'data': data}
+            if ('termtable' in request.args):
+                result['termtable'] = termtable
+            return jsonify(result)
         else:
             return jsonify({})
 
