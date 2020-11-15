@@ -53,8 +53,9 @@ class Selch():
         documents = len(files)
         
         idf = {}
-        I = self.__idf.readIter()
-        I.next()
+        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        documents = len(files)
+        I = self.__idf.readIter_filter(None, is_bahasa_indonesia)
         i = 0
         while (I.hasNext()):
             i += 1
