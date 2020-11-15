@@ -12,21 +12,25 @@ class Vezz():
     def __init__(self):
         self.__idf = Data('idf', ['language', 'term', 'count'])
 
-    def dot(self, d: dict, d2: dict, idf: dict, documents: float) -> float:
+    def multiplier(self, d1: dict, d2: dict):
+        for i in d1.keys():
+            d1[i] *= d2[i]
+
+    def dot(self, d: dict, d2: dict) -> float:
         norm = 0
         for i in d.keys():
-            norm += ((d[i]*idf[i])**2)
+            norm += (d[i]**2)
         norm **= 0.5
         norm2 = 0
         for i in d2.keys():
             if i in d.keys():
-                norm2 += ((d2[i]*idf[i])**2)
+                norm2 += (d2[i]**2)
         norm2 **= 0.5
 
         result = 0
         for i in d.keys():
-            if i in d2.keys() and i in idf.keys():
-                result += ((d[i]*idf[i])*(d2[i]*idf[i]))
+            if i in d2.keys():
+                result += (d[i]*d2[i])
         finalresult = 0
         try:
             finalresult = result/(norm*norm2)
@@ -45,6 +49,9 @@ class Selch():
         self.__sc = sc
 
     def search(self, query: str, is_bahasa_indonesia: bool) -> list:
+        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
+        documents = len(files)
+        
         idf = {}
         I = self.__idf.readIter()
         I.next()
@@ -57,24 +64,24 @@ class Selch():
             except:
                 print(f"Line {i} Error.")
                 continue
-
-        files = self.__docmanager.getDocuments(is_bahasa_indonesia)
-        documents = len(files)
+        
         sorter = []
         query = self.__lpp.naturalize(is_bahasa_indonesia, query)
         q = query.split()
         query_set = set(q)
         d = {}
         for w in query_set:
-            if i in idf.keys():
+            if w in idf.keys():
                 d[w] = q.count(w)
+        Vezz().multiplier(d, idf)
         for f in files:
             I = self.__tf.readIter_filter(f, is_bahasa_indonesia)
             cur_dict = {}
             while (I.hasNext()):
                 now = dict(I.next())
                 cur_dict[now["term"]] = float(now["tf"])
-            sorter.append([Vezz().dot(d, cur_dict, idf, float(documents)), f])
+            Vezz().multiplier(cur_dict, idf)
+            sorter.append([Vezz().dot(d, cur_dict), f])
         sorter.sort(reverse=True)
         result = []
         for i in range (len(sorter)):
