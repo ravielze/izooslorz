@@ -112,13 +112,29 @@
 }
 
 .QueryPage-Head{
-  height: 100px;
+  height: 60px;
+  padding-left: 50px;
   width: 100%;
   border-bottom: black solid;
   border-bottom-width: 1px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .QueryPage-Body{
-  width: 80%;
+  width: 100%;
+  padding-left: 100px;
+  padding-right: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.docuQueryMap{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .Container{
   display: flex;

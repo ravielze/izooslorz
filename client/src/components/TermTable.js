@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 
-
 class Table extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            termTable: [{'terms': 'game', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 2}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'life', 'query': 1, 'documents': [{'doc': '1.txt', 'value': 1}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'everlast', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 1}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'worth', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'live', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'never', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 1}]}, {'terms': 'learn', 'query': 1, 'documents': [{'doc': '1.txt', 
-            'value': 1}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 1}]}, {'terms': 'unexamin', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 1}, {'doc': '3.txt', 'value': 0}]}, {'terms': 'stop', 'query': 0, 'documents': [{'doc': '1.txt', 'value': 0}, {'doc': '2.txt', 'value': 0}, {'doc': '3.txt', 'value': 1}]}]
-        }
     }
     renderTableData() {
-        return this.state.termTable.map((termTable, index) => {
+        return this.props.data.map((termTable, index) => {
             const { terms, query, documents } = termTable
             return (
                 <tr key={terms}>
@@ -31,8 +26,8 @@ class Table extends Component {
 
     renderTableHeader() {
         let header = ['terms', 'query'];
-        for(var d=0; d < this.state.termTable[0].documents.length; d++){
-            header.push(this.state.termTable[0].documents[d]['doc']);
+        for(var d=0; d < this.props.data[0].documents.length; d++){
+            header.push(this.props.data[0].documents[d]['doc']);
         }
         return header.map((key, index) => {
             return <th key={index}>{key}</th>
