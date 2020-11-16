@@ -36,7 +36,11 @@ class Scraper():
             webContent      = response.read()
             soup            = BeautifulSoup(webContent.decode('utf8'), 'html.parser')
 
-            title           = self.__lpp.lemmatize(soup.find('title').string).replace(' ', '')
+            try:
+                raw_title       = soup.find('title').string
+            except AttributeError:
+                raw_title   = 'untitled_' + url
+            title           = self.__lpp.lemmatize(raw_title).replace(' ', '')
             fname           = title + "_" + self.randomNaming(9) + ".html"
             f               = open(self.getPath(is_bahasa_indonesia, fname), 'wb')
             f.write(webContent)

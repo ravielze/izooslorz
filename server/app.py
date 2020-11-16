@@ -93,7 +93,7 @@ def webscrape():
         print(f"{filename}: Done.")
 
     if request.method == 'POST':
-        data = request.get_json()
+        data = request.form
         if 'lang' not in data.keys():
             return jsonify({'message': 'Language not found.'})
         lang = data['lang']
@@ -101,7 +101,8 @@ def webscrape():
             return jsonify({'message': 'Language not found.'})
         if 'url' not in data.keys():
             return jsonify({'message': 'Url not found.'})
-        url = data['url']
+        url = data.get('url')
+        print(f"Scraping {url}")
         scrape = service.sc.htmlScraper((lang == 'bahasa_indonesia'), url)
         if not(scrape[0]):
             return jsonify({'message': 'Error. ' + scrape[1]})
