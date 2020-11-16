@@ -1,6 +1,6 @@
 import "../App.css";
 import React, {useState} from "react";
-
+import axios from 'axios';
 import Image from "../img/logo.jpg";
 import SearchBar from "../components/SearchBar.js";
 import ControlledOpenSelect from "../components/DropDown.js";
@@ -12,7 +12,7 @@ const Home = () => {
 
   const handleKeyPress = (ev) => {
     if (ev.key === "Enter"){
-      history.push(`/QueryPage/${search}/${lang}`);
+      history.push({pathname: `/QueryPage/${search}/${lang}`, query: search});
     }
   }
 
