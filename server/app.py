@@ -94,12 +94,12 @@ def webscrape():
 
     if request.method == 'POST':
         data = request.get_json()
-        if 'lang' not in request.form:
+        if 'lang' not in data.keys():
             return jsonify({'message': 'Language not found.'})
         lang = data['lang']
         if not(request.form.get('lang') in ['english', 'bahasa_indonesia']):
             return jsonify({'message': 'Language not found.'})
-        if 'url' not in request.form:
+        if 'url' not in data.keys():
             return jsonify({'message': 'Url not found.'})
         url = data['url']
         scrape = service.sc.htmlScraper((lang == 'bahasa_indonesia'), url)
