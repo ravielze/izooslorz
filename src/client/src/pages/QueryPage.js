@@ -1,5 +1,5 @@
 import "../App.css";
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import DocuQuery from "../components/Documents";
 import Table from "../components/TermTable";
@@ -8,23 +8,34 @@ import NavBar from "../components/NavBar.js";
 import SearchBar from "../components/SearchBar.js";
 import SearchIcon from "@material-ui/icons/Search";
 import Image from "../img/logo.jpg";
+import ControlledOpenSelect from "../components/DropDown.js";
+
+const lang_converted = {
+  "bahasa_indonesia" : "id",
+  "english" : "en"
+}
 
 export default class QueryPage extends React.Component {
   state = {
     name: this.props.location.query,
     data: [],
     termtable: [{documents: []}],
+    lang: "bahasa_indonesia",
   }
   handleChange = event => {
     this.setState({ name: event.target.value });
   }
+  
+  handleLangChange = (lang) => {
+    this.setState({ ...this.state, lang:lang});
+  }
 
   handleSubmit = event => {
     event.preventDefault();
-
+    
     const search = {
       'keyword': this.state.name,
-      'lang': "en"
+      'lang': lang_converted[this.state.lang]
     };
     axios.post(`http://localhost:5000/search`, search)
       .then(res => {
@@ -46,6 +57,7 @@ export default class QueryPage extends React.Component {
                 <SearchIcon />
               </button>
             </form>
+            <ControlledOpenSelect value={this.state.lang} handleChange={this.handleLangChange}/>
           </div>
           <div className="QueryPage-Body">
             <DocuQuery data = {this.state.data}/>

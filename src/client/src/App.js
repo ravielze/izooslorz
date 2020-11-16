@@ -11,20 +11,18 @@ import Home from "./pages/Home.js";
 import AboutUs from "./pages/AboutUsPage.js";
 import QueryPage from "./pages/QueryPage.js";
 import WebScraping from "./pages/WebScraping.js";
-import PersonList from "./pages/PersonList.js";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path = "/" component={Home}/>
+          <Route exact path = "/" component={QueryPage}/>
           <Route path = "/upload" component={Upload}/> 
-          <Route path = "/home" component={Home}/>
           <Route path = "/aboutus" component={AboutUs}/>
-          <Route path = "/QueryPage/:query/:lang" component={QueryPage}/>
+          <Route path = "/home" component={QueryPage}/>
+          <Route path = "/oldhome" component={Home}/>
           <Route path = "/WebScraping" component={WebScraping}/>
-          <Route path = "/tes" component={PersonList}/>
         </Switch>
       </Router>
     </div>

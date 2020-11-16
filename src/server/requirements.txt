@@ -8,6 +8,7 @@ docx2txt==0.8
 EbookLib==0.17.1
 extract-msg==0.23.1
 Flask==1.1.2
+Flask-Cors==3.0.9
 idna==2.10
 IMAPClient==2.1.0
 itsdangerous==1.1.0

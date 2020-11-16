@@ -127,8 +127,7 @@ class Selch():
             container[now["term"]][now["filename"]] = now["tf"]
         
         terms = set([])
-        I = self.__idf.readIter()
-        I.next()
+        I = self.__idf.readIter_filter(None, is_bahasa_indonesia)
         while (I.hasNext()):
             now = dict(I.next())
             terms.add(now["term"])
